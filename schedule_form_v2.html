@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>스케줄 변경 요청서</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: #f0f4f8; min-height: 100vh; padding: 0 0 40px; }
+  .header { background: #1A2744; color: white; padding: 28px 20px 20px; text-align: center; }
+  .header h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .header p { font-size: 12px; opacity: 0.7; }
+  .notice { background: #E3F2FD; color: #0D47A1; font-size: 12px; padding: 10px 20px; text-align: center; border-bottom: 1px solid #BBDEFB; }
+  .form-body { padding: 16px; max-width: 480px; margin: 0 auto; }
+  .section { background: white; border-radius: 12px; margin-bottom: 12px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+  .section-title { padding: 12px 16px; font-size: 13px; font-weight: 700; color: white; }
+  .section-title.blue   { background: #1565C0; }
+  .section-title.red    { background: #C62828; }
+  .section-title.green  { background: #2E7D32; }
+  .section-title.purple { background: #6A1B9A; }
+  .section-title.dark   { background: #37474F; }
+  .field { padding: 10px 16px; border-bottom: 0.5px solid #f0f0f0; display: flex; flex-direction: column; gap: 4px; }
+  .field:last-child { border-bottom: none; }
+  .field label { font-size: 11px; color: #888; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+  .field input, .field select, .field textarea {
+    width: 100%; border: 1px solid #e0e0e0; border-radius: 8px;
+    padding: 9px 12px; font-size: 14px; color: #212121;
+    background: #fafafa; outline: none; font-family: inherit;
+    -webkit-appearance: none; appearance: none;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: #1565C0; background: white; }
+  .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%23888' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+  .field textarea { resize: none; min-height: 72px; line-height: 1.5; }
+  .manager-notice { font-size: 11px; color: #aaa; padding: 8px 16px 0; }
+  .submit-btn { width: 100%; background: #1A2744; color: white; border: none; border-radius: 12px; padding: 16px; font-size: 16px; font-weight: 700; margin-top: 8px; cursor: pointer; font-family: inherit; }
+  .submit-btn:active { opacity: 0.85; }
+  .print-hint { text-align: center; font-size: 11px; color: #aaa; margin-top: 16px; }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="header">
+  <h1>스케줄 변경 요청서</h1>
+  <p>Schedule Change Request</p>
+</div>
+<div class="notice">✏️ 아래 항목을 모두 작성 후 매니저에게 제출해주세요 &nbsp;(최소 3일 전)</div>
+
+<form action="https://formspree.io/f/xnjwzzbe" method="POST">
+<div class="form-body">
+
+  <div class="section">
+    <div class="section-title blue">👤 직원 정보</div>
+    <div class="field">
+      <label>이름 (Name)</label>
+      <input type="text" name="이름" placeholder="이름을 입력하세요" required>
+    </div>
+    <div class="field">
+      <label>포지션 (Position)</label>
+      <select name="포지션" required>
+        <option value="">선택하세요</option>
+        <option>서버</option><option>스시바</option><option>핫푸드</option>
+        <option>텐푸라</option><option>하프</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>제출 날짜</label>
+      <input type="date" name="제출날짜" id="submit-date" required>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title red">📅 기존 근무 (변경 전)</div>
+    <div class="field">
+      <label>근무 날짜</label>
+      <input type="date" name="기존근무날짜" id="before-date" required>
+    </div>
+    <div class="field">
+      <label>근무 요일</label>
+      <select name="기존근무요일" id="before-day" required>
+        <option value="">선택하세요</option>
+        <option>월요일</option><option>화요일</option><option>수요일</option>
+        <option>목요일</option><option>금요일</option><option>토요일</option><option>일요일</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>출근 시간</label>
+      <select name="기존출근시간" required>
+        <option value="">선택하세요</option>
+        <option>10:45</option><option>12:30</option><option>15:00</option>
+        <option>16:00 (하프)</option><option>오프</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title green">🔄 변경 희망 (변경 후)</div>
+    <div class="field">
+      <label>희망 날짜</label>
+      <input type="date" name="희망날짜" id="after-date" required>
+    </div>
+    <div class="field">
+      <label>희망 요일</label>
+      <select name="희망요일" id="after-day" required>
+        <option value="">선택하세요</option>
+        <option>월요일</option><option>화요일</option><option>수요일</option>
+        <option>목요일</option><option>금요일</option><option>토요일</option><option>일요일</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>희망 시간</label>
+      <select name="희망시간" required>
+        <option value="">선택하세요</option>
+        <option>10:45</option><option>12:30</option><option>15:00</option>
+        <option>16:00 (하프)</option><option>오프</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title purple">📝 요청 사유</div>
+    <div class="field">
+      <label>사유 유형</label>
+      <select name="사유유형" required>
+        <option value="">선택하세요</option>
+        <option>휴가</option><option>반차</option><option>병가</option>
+        <option>개인사정</option><option>대타 요청</option><option>기타</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>상세 내용</label>
+      <textarea name="상세내용" placeholder="자세한 내용을 입력해주세요 (선택사항)"></textarea>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title dark">🔁 대타 직원 (해당시)</div>
+    <div class="field">
+      <label>대타 직원 이름</label>
+      <input type="text" name="대타직원이름" placeholder="해당없으면 비워두세요">
+    </div>
+    <div class="field">
+      <label>대타 확인 여부</label>
+      <select name="대타확인여부">
+        <option value="">선택하세요</option>
+        <option>확인 완료</option><option>미확인</option><option>해당없음</option>
+      </select>
+    </div>
+  </div>
+
+  <button type="submit" class="submit-btn">제출하기</button>
+  <p class="print-hint">📄 출력: 브라우저 메뉴 → 인쇄</p>
+
+</div>
+</form>
+
+<script>
+  document.getElementById('submit-date').valueAsDate = new Date();
+  document.getElementById('before-date').addEventListener('change', function() {
+    const days = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
+    if (this.value) {
+      const d = new Date(this.value + 'T00:00:00');
+      document.getElementById('before-day').value = days[d.getDay()];
+    }
+  });
+  document.getElementById('after-date').addEventListener('change', function() {
+    const days = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
+    if (this.value) {
+      const d = new Date(this.value + 'T00:00:00');
+      document.getElementById('after-day').value = days[d.getDay()];
+    }
+  });
+</script>
+</body>
+</html>
