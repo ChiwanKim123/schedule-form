@@ -57,14 +57,6 @@
       <input type="text" id="name" placeholder="이름을 입력하세요">
     </div>
     <div class="field">
-      <label>포지션 (Position)</label>
-      <select id="position">
-        <option value="">선택하세요</option>
-        <option>서버</option><option>스시바</option><option>핫푸드</option>
-        <option>텐푸라</option><option>하프</option>
-      </select>
-    </div>
-    <div class="field">
       <label>발생 날짜</label>
       <input type="date" id="incident-date">
     </div>
@@ -94,52 +86,20 @@
         ${mistakeCount > 1 ? '<button class="delete-btn" onclick="removeMistake(' + mistakeCount + ')">삭제</button>' : ''}
       </div>
       <div class="field">
-        <label>발생 시간대</label>
-        <select id="time-${mistakeCount}">
-          <option value="">선택하세요</option>
-          <option>오픈 (10:30~13:00)</option>
-          <option>런치 (13:00~15:00)</option>
-          <option>브레이크 (15:00~17:00)</option>
-          <option>디너 (17:00~마감)</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>실수 유형</label>
-        <select id="type-${mistakeCount}">
-          <option value="">선택하세요</option>
-          <option>잘못된 오더 입력</option>
-          <option>우버 배송 음식 누락</option>
-          <option>잘못된 테이블 서빙</option>
-          <option>품목 개수(수량) 실수</option>
-          <option>오더지 특이사항(수정요청) 오독</option>
-          <option>기타</option>
-        </select>
+        <label>발생 시간</label>
+        <input type="text" id="time-${mistakeCount}" placeholder="예: 오후 1시쯤, 디너 시작 직후 등">
       </div>
       <div class="field">
         <label>어떤 오더를 실수했나요?</label>
         <input type="text" id="order-${mistakeCount}" placeholder="예: 연어 nigiri 2개 → 1개로 입력">
       </div>
       <div class="field">
-        <label>당시 상황</label>
-        <textarea id="situation-${mistakeCount}" placeholder="예: 테이블이 많아 바빴고 오더지를 급하게 읽다가 놓쳤습니다."></textarea>
-      </div>
-      <div class="field">
         <label>어떻게 해결했나요?</label>
-        <textarea id="solution-${mistakeCount}" placeholder="예: 즉시 주방에 알리고 누락된 음식을 추가 배달 보냈습니다."></textarea>
-      </div>
-      <div class="field">
-        <label>고객 반응</label>
-        <select id="reaction-${mistakeCount}">
-          <option value="">선택하세요</option>
-          <option>😊 이해해주심</option>
-          <option>😐 불만 표시했으나 해결됨</option>
-          <option>😠 강한 불만 / 컴플레인</option>
-          <option>— 고객 인지 못함</option>
-        </select>
+        <input type="text" id="solution-${mistakeCount}" placeholder="예: 즉시 주방에 알리고 추가 배달">
       </div>
       <div class="field">
         <label>💡 재발 방지 방법</label>
-        <textarea id="prevention-${mistakeCount}" placeholder="예: 오더지 하단의 특이사항을 형광펜으로 표시하고 마지막에 다시 확인하겠습니다."></textarea>
+        <input type="text" id="prevention-${mistakeCount}" placeholder="예: 오더 입력 전 특이사항 다시 확인">
       </div>
     `;
     container.appendChild(block);
@@ -153,11 +113,10 @@
 
   function submitForm() {
     const name = document.getElementById('name').value;
-    const position = document.getElementById('position').value;
     const date = document.getElementById('incident-date').value;
 
-    if (!name || !position || !date) {
-      alert('직원 정보를 모두 입력해주세요.');
+    if (!name || !date) {
+      alert('이름과 날짜를 입력해주세요.');
       return;
     }
 
@@ -167,28 +126,25 @@
       return;
     }
 
-    let body = `이름: ${name}\n포지션: ${position}\n날짜: ${date}\n총 ${blocks.length}건\n\n`;
+    let body = `이름: ${name}\n날짜: ${date}\n총 ${blocks.length}건\n\n`;
     let valid = true;
 
     blocks.forEach((block, idx) => {
       const num = block.id.replace('mistake-', '');
       const time = document.getElementById('time-' + num)?.value || '';
-      const type = document.getElementById('type-' + num)?.value || '';
       const order = document.getElementById('order-' + num)?.value || '';
-      const situation = document.getElementById('situation-' + num)?.value || '';
       const solution = document.getElementById('solution-' + num)?.value || '';
-      const reaction = document.getElementById('reaction-' + num)?.value || '';
       const prevention = document.getElementById('prevention-' + num)?.value || '';
 
-      if (!type || !order || !solution) { valid = false; }
+      if (!order || !solution) { valid = false; }
 
       body += `━━━━━━━━━━━━━━━━━━\n`;
       body += `[${idx + 1}건째]\n`;
-      body += `시간대: ${time}\n유형: ${type}\n실수 오더: ${order}\n해결 방법: ${solution}\n재발 방지: ${prevention}\n\n`;
+      body += `시간: ${time}\n실수 오더: ${order}\n해결 방법: ${solution}\n재발 방지: ${prevention}\n\n`;
     });
 
     if (!valid) {
-      alert('각 건의 필수 항목(유형, 오더 내용, 해결 방법)을 입력해주세요.');
+      alert('각 건의 오더 내용과 해결 방법을 입력해주세요.');
       return;
     }
 
